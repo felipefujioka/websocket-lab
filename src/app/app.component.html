@@ -1,3 +1,8 @@
-<h1>
-  {{title}}
-</h1>
+<ul>
+  <li *ngFor="let msg of msgs">
+    {{msg}}
+  </li>
+</ul>
+
+<input type="text" [(ngModel)]="text"/>
+<button (click)="send()">send</button>
