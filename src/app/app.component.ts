@@ -4,6 +4,8 @@ import { Subject, Observable } from 'rxjs';
 
 import { WebsocketService } from './websocket.service';
 
+import * as io from 'socket.io-client';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -11,7 +13,7 @@ import { WebsocketService } from './websocket.service';
 })
 export class AppComponent implements OnInit{
   
-  ws: WebSocket;
+  ws: any;
   msgs: string[] = [];
   text: string;
 
@@ -27,7 +29,7 @@ export class AppComponent implements OnInit{
   }
 
   send() {
-    this.ws.send(this.text);
+    this.ws.emit('message', this.text);
   }
 
 }
