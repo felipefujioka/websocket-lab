@@ -15,6 +15,7 @@ export class AppComponent implements OnInit{
   
   ws: any;
   msgs: string[] = [];
+  updates: any[] = [];
   text: string;
 
   constructor(private websocketService: WebsocketService) {}
@@ -25,6 +26,11 @@ export class AppComponent implements OnInit{
       .subscribe(data => {
         console.log(data);
         this.msgs.push(data);
+      }) ;
+    this.websocketService.update
+      .subscribe(data => {
+        console.log(data);
+        this.updates.push(data);
       }) 
   }
 

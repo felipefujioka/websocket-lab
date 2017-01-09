@@ -1,8 +1,24 @@
-<ul>
-  <li *ngFor="let msg of msgs">
-    {{msg}}
-  </li>
-</ul>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-6">
+      <ul>
+        <li *ngFor="let msg of msgs">
+          {{msg}}
+        </li>
+      </ul>
+    </div>
 
-<input type="text" [(ngModel)]="text"/>
-<button (click)="send()">send</button>
+    <div class="col-sm-6">
+      <ul>
+        <li *ngFor="let upd of updates">
+          Type: {{upd.type}} Id: {{upd.id}}
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row">
+    <input type="text" [(ngModel)]="text"/>
+    <button (click)="send()">send</button>
+  </div>
+</div>
