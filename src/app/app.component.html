@@ -11,7 +11,10 @@
     <div class="col-sm-5">
       <ul>
         <li *ngFor="let order of orders">
-          Id: {{order.id}} Name: {{order.name}} Value: {{order.value}}
+          <div>
+            Id: {{order.id}} Name: {{order.name}} Value: {{order.value}}
+          </div>
+          <button (click)="remove(order.id)">x</button>
         </li>
       </ul>
     </div>

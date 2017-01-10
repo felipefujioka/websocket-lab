@@ -7,6 +7,8 @@ import { AppComponent } from './app.component';
 
 import { WebsocketService } from './websocket.service';
 
+import { OrdersService } from './orders.service';
+
 @NgModule({
   declarations: [
     AppComponent
@@ -17,7 +19,8 @@ import { WebsocketService } from './websocket.service';
     HttpModule
   ],
   providers: [
-    WebsocketService
+    WebsocketService,
+    OrdersService
   ],
   bootstrap: [AppComponent]
 })

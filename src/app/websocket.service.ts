@@ -9,12 +9,11 @@ import * as io from 'socket.io-client';
 export class WebsocketService {
 
   data: Subject<string>;
-  orders: Subject<any>;
   socket: any;
+  connectionUp: boolean = false;
 
   constructor() {
       this.data = new Subject();
-      this.orders = new Subject();
       this.socket = this.create();
   }
 
@@ -23,23 +22,23 @@ export class WebsocketService {
     var socket = io('ws://localhost:10443');
     
     socket.on('connect', (data) => {
-      self.data.next(data);
+      this.connectionUp = true;
+      self.data.next("connected");
     });
 
     socket.on('message', (data) => {
       self.data.next(data);
     });
 
-    socket.on('update', (data) => {
-
-      if(data.type == "order") {
-        this.orders.next(JSON.parse(data.fields));
-      }
-
+    socket.on('disconnect', () => {
+      this.connectionUp = false;
+      self.data.next("disconnected");
     });
 
     return socket
   }
+
+
 
   subscribe(collection: string) {
     this.socket.emit("subscribe", collection)
