@@ -9,12 +9,12 @@ import * as io from 'socket.io-client';
 export class WebsocketService {
 
   data: Subject<string>;
-  update: Subject<string>;
+  orders: Subject<any>;
   socket: any;
 
   constructor() {
       this.data = new Subject();
-      this.update = new Subject();
+      this.orders = new Subject();
       this.socket = this.create();
   }
 
@@ -31,30 +31,18 @@ export class WebsocketService {
     });
 
     socket.on('update', (data) => {
-      self.update.next(JSON.parse(data));
+
+      if(data.type == "order") {
+        this.orders.next(JSON.parse(data.fields));
+      }
+
     });
 
-    // const ws = new ReconnectingWebsocket('ws://localhost:10443');
-
-    // ws.addEventListener('open', () => {
-    //     this.data.next('Connected');
-    // });
-
-    // ws.addEventListener('close', () => {
-    //     this.data.next('Disconnected');
-    // });
-
-    // ws.onmessage = (event) => {
-    //     this.data.next(event.data);
-    // };
-
-    // ws.onerror = (err) => {
-    //     if (err.code === 'EHOSTDOWN') {
-    //         console.log('server down');
-    //     }
-    // };
-
     return socket
-}
+  }
+
+  subscribe(collection: string) {
+    this.socket.emit("subscribe", collection)
+  }  
 
 }

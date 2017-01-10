@@ -1,6 +1,6 @@
 <div class="container">
   <div class="row">
-    <div class="col-sm-6">
+    <div class="col-sm-5">
       <ul>
         <li *ngFor="let msg of msgs">
           {{msg}}
@@ -8,17 +8,17 @@
       </ul>
     </div>
 
-    <div class="col-sm-6">
+    <div class="col-sm-5">
       <ul>
-        <li *ngFor="let upd of updates">
-          Type: {{upd.type}} Id: {{upd.id}}
+        <li *ngFor="let order of orders">
+          Id: {{order.id}} Name: {{order.name}} Value: {{order.value}}
         </li>
       </ul>
     </div>
-  </div>
 
-  <div class="row">
-    <input type="text" [(ngModel)]="text"/>
-    <button (click)="send()">send</button>
+    <div class="col-sm-2">
+      <input type="text" [(ngModel)]="text"/>
+      <button (click)="send()">send</button>
+    </div>
   </div>
 </div>
