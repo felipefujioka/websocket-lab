@@ -15,94 +15,32 @@ export class OrdersService {
 
   _orders: any[] = [];
   orders: BehaviorSubject<any[]>;
+  _ordersRecords: string[] = [];
+  ordersRecords: BehaviorSubject<string[]>;
   buffer: any[] = [];
   ready: boolean = false;
   sequence: number = 0;
   errors: number = 0;
   serverSize: number = 0;
 
-  
-
-  constructor(private ws: WebsocketService, private pubnubService: PubNubAngular) { 
+  constructor(private pubnubService: PubNubAngular) { 
+    let self = this;
     this.orders = new BehaviorSubject<any[]>([]);
+    this.ordersRecords = new BehaviorSubject<string[]>([]);
     let ds = deepstream('localhost:6020').login();
 
     var driver = ds.record.getList( 'orders' );
 
-    // subscribe to any changes within position
     driver.subscribe( function( orders ){
-      console.log(orders);
+      self._ordersRecords = orders;
+      self.ordersRecords.next(self._ordersRecords)
+      let records = [];
+      _.each(self._ordersRecords, (recordName) => {
+        records.push(ds.record.getRecord(recordName).get());
+      });
+      self.orders.next(records);
     });
 
-    // this.ws.socket.on("update", (data) => {
-    //   this.buffer.push(data);
-    //   this.serverSize = data.size;
-    //   if(this.ready) {
-    //     while(this.buffer.length > 0) {
-    //       let data = this.buffer.shift();
-    //       this.applyUpdate(data);
-    //     }
-    //   }
-    // });
-
-    // this.ws.socket.on("snapshot", (data) => {
-    //     this.applyUpdate(data);
-    // });
-
-    // pubnubService.init({
-    //   publishKey: 'pub-c-ca89589b-68e4-48ee-85dd-2cc9cf01280a',
-    //   subscribeKey: 'sub-c-6ded6650-d904-11e6-a478-02ee2ddab7fe'
-    // });
-
-    // pubnubService.subscribe({channels: ['my_channel'], triggerEvents: true, withPresence: true});
-
-    // pubnubService.getMessage('my_channel', function(msg) {
-    //   console.log(msg);
-    // });
-
-    // this.ws.socket.on("ready", (data) => {
-    //   this.ready = true;
-    //   while(this.buffer.length > 0) {
-    //     let data = this.buffer.shift();
-    //     if(data.seq < this.sequence) {
-    //       continue;
-    //     }
-    //     this.applyUpdate(data);
-    //   }
-    // });
-
-    // this.ws.data.subscribe(data => {
-    //   if(data == "disconnected") {
-    //     this._orders = [];
-    //     this.orders.next(this._orders)
-    //   }else if (data == "connected") {
-    //     this.ready = false;
-    //     this.ws.subscribe("orders"); 
-    //   }
-    // });
   }
-
-  applyUpdate(data: any) {
-    if (this.sequence != 0 && (this.sequence >= data.seq || data.seq != this.sequence + 1)) {
-      this.errors++;
-    }
-    if(data.seq > 0){
-      this.sequence = data.seq;
-    }
-    if(data.type == "order") {
-      if(data.action == "added") {
-        this._orders.push(JSON.parse(data.fields));
-        this.orders.next(this._orders)
-      }else if (data.action == "removed") {
-        this._orders = this._orders.filter((item) => item.id != data.id);
-        this.orders.next(this._orders)
-      }else if (data.action == "changed") {
-        this._orders = _.reject(this._orders, { id: data.id });
-        this._orders.push(JSON.parse(data.fields));
-        this.orders.next(this._orders);
-      }
-    }
-  }
-
 
 }

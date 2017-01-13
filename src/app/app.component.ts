@@ -22,6 +22,7 @@ export class AppComponent implements OnInit{
   ws: any;
   msgs: string[] = [];
   orders: any[] = [];
+  ordersRecords: string[] = [];
   text: string;
   update: string;
 
@@ -31,6 +32,13 @@ export class AppComponent implements OnInit{
     this.ordersService.orders.subscribe(orders => {
       this.orders = _.sortBy(orders, (item) => {
         return +item.id;
+      });
+    })
+    this.ordersService.ordersRecords.subscribe(ordersRecords => {
+      this.ordersRecords = _.sortBy(ordersRecords, (item) => {
+        let regexp = new RegExp('^orders\/(\\d*)$');
+        let match = item.match(regexp);
+        return +match[1];
       });
     })
   }
