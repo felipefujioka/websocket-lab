@@ -23,6 +23,7 @@
     "@types/lodash": "^4.14.48",
     "@types/socket.io-client": "^1.4.29",
     "core-js": "^2.4.1",
+    "deepstream.io-client-js": "github:deepstreamio/deepstream.io-client-js#93e701dfa95dd3e008d289331d84b18f1bd2b91b",
     "lodash": "^4.17.4",
     "pubnub": "^4.3.3",
     "pubnub-angular2": "^1.0.0-beta.7",
