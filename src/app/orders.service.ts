@@ -36,7 +36,7 @@ export class OrdersService {
       self.ordersRecords.next(self._ordersRecords)
       let records = [];
       _.each(self._ordersRecords, (recordName) => {
-        records.push(ds.record.getRecord(recordName).get());
+        records.push(ds.record.getRecord(recordName));
       });
       self.orders.next(records);
     });

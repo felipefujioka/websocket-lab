@@ -4,9 +4,9 @@
       <ul>
         <li *ngFor="let order of orders">
           <div>
-            Id: {{order.id}} Name: {{order.name}} Value: {{order.value}}
+            Id: {{order.get().id}} Name: {{order.get().name}} Value: {{order.get().value}}
           </div>
-          <button (click)="remove(order.id)">x</button>
+          <button (click)="remove(order.get().id)">x</button>
         </li>
       </ul>
     </div>
