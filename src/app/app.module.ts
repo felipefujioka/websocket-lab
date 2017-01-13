@@ -9,6 +9,8 @@ import { WebsocketService } from './websocket.service';
 
 import { OrdersService } from './orders.service';
 
+import { PubNubAngular } from 'pubnub-angular2';
+
 @NgModule({
   declarations: [
     AppComponent
@@ -20,7 +22,8 @@ import { OrdersService } from './orders.service';
   ],
   providers: [
     WebsocketService,
-    OrdersService
+    OrdersService,
+    PubNubAngular
   ],
   bootstrap: [AppComponent]
 })

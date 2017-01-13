@@ -10,6 +10,8 @@ import { OrdersService } from './orders.service';
 
 import * as io from 'socket.io-client';
 
+import * as _ from 'lodash';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -21,12 +23,15 @@ export class AppComponent implements OnInit{
   msgs: string[] = [];
   orders: any[] = [];
   text: string;
+  update: string;
 
-  constructor(private ordersService: OrdersService, private http: Http) {}
+  constructor(public ordersService: OrdersService, private http: Http) {}
 
   ngOnInit() {
     this.ordersService.orders.subscribe(orders => {
-      this.orders = orders;
+      this.orders = _.sortBy(orders, (item) => {
+        return +item.id;
+      });
     })
   }
 
@@ -46,7 +51,27 @@ export class AppComponent implements OnInit{
     let options = { headers: headers };
     let name = `name ${this.text}`;
     this.http.post(  "http://localhost:4567/orders",
-                     JSON.stringify({id: this.text, name: name, value: Math.random() * 100}), 
+                     JSON.stringify({id: this.text, name: name, value: Math.floor(Math.random() * 100)}), 
+                     options)
+      .toPromise()
+      .then(console.log)
+      .catch(console.log);
+  }
+
+  pubnubTest() {
+    this.http.get(  `http://localhost:4567/hello`)
+      .toPromise()
+      .then(console.log)
+      .catch(console.log);
+  }
+
+  sendUpdate() {
+    // this.ws.emit('message', this.text);
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = { headers: headers };
+    let name = `name updated`;
+    this.http.put(  `http://localhost:4567/orders/${this.update}`,
+                     JSON.stringify({id: this.update, name: name, value: Math.random() * 100}), 
                      options)
       .toPromise()
       .then(console.log)

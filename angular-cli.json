@@ -22,7 +22,8 @@
         "../node_modules/bootstrap/dist/css/bootstrap.min.css"
       ],
       "scripts": [
-        "../node_modules/bootstrap/dist/js/bootstrap.min.js"
+        "../node_modules/bootstrap/dist/js/bootstrap.min.js",
+        "../node_modules/pubnub-angular2/dist/pubnub-angular2.js"
       ],
       "environments": {
         "source": "environments/environment.ts",
